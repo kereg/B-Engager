@@ -13,26 +13,24 @@ use CurlService;
 class Page
 {
     private $pageId;
-    private $pageAccessToken;
-    private $userAccessToken;
+    private $accessToken;
     const FACEBOOK_GRAPH_API_URL = "https://graph.facebook.com/v2.10";
 
     /**
      * GetPost constructor.
      * @param $pageId
      * @param $accessToken
-     * @param $pageAccessToken
+     * @param $accessToken
      */
-    public function __construct($pageId, $pageAccessToken)
+    public function __construct($pageId, $accessToken)
     {
         $this->pageId = $pageId;
-        //$this->userAccessToken = $userAccessToken;
-        $this->pageAccessToken = $pageAccessToken;
+        $this->accessToken = $accessToken;
     }
 
     private function getPageAccessToken(){
 
-        $url = self::FACEBOOK_GRAPH_API_URL."/{$this->pageId}?fields=access_token&access_token={$this->userAccessToken}";
+        $url = self::FACEBOOK_GRAPH_API_URL."/{$this->pageId}?fields=access_token&access_token={$this->accessToken}";
         $response = CurlService::getCurlResponse($url);
         $pageAccessToken = $response['access_token'];
         return $pageAccessToken;
@@ -69,7 +67,7 @@ class Page
 
 
     private function getAllPagePosts(){
-        $url = self::FACEBOOK_GRAPH_API_URL."/{$this->pageId}/promotable_posts?fields=created_time,is_published,message,updated_time,link,description,caption,name,object_id,full_picture,child_attachments,attachments,picture,source,scheduled_publish_time,type,comments.limit(10),insights.metric(post_negative_feedback,post_fan_reach,post_impressions_unique,post_reactions_like_total,post_reactions_love_total,post_reactions_wow_total,post_reactions_haha_total,post_reactions_sorry_total,post_reactions_anger_total,post_reactions_by_type_total,post_stories_by_action_type)&access_token={$this->pageAccessToken}";
+        $url = self::FACEBOOK_GRAPH_API_URL."/{$this->pageId}/promotable_posts?fields=created_time,is_published,message,updated_time,link,description,caption,name,object_id,full_picture,child_attachments,attachments,picture,source,scheduled_publish_time,type,comments.limit(10),insights.metric(post_negative_feedback,post_fan_reach,post_impressions_unique,post_reactions_by_type_total,post_stories_by_action_type)&limit=10&access_token={$this->accessToken}";
         
         $response = CurlService::makeFbGetApiCall($url);
 

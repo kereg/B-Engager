@@ -20,7 +20,7 @@ class ScoreHandler {
    * @param $weightComments
    * @internal param $scoreGen
    */
-  public function __construct($dataArr, $weightShares, $weightReactions, $weightComments) {
+  public function __construct($dataArr, $weightShares=0.33, $weightReactions=0.33, $weightComments=0.33) {
     $this->updateMaxAmounts($dataArr);
     $this->scoreGen = new ScoreGenerator($this->maxComments, $this->maxReactions, $this->maxShares, $weightShares, $weightReactions, $weightComments);
   }
@@ -39,8 +39,9 @@ class ScoreHandler {
   public function getScores($dataArr) {
     foreach ($dataArr as $dataObj) {
       $totalsArr = $dataObj["totals"];
-      $this->scoreGen->GenerateScoreObj($totalsArr["share"], $totalsArr["reaction"])
+      //$this->scoreGen->GenerateScoreObj($totalsArr["share"], $totalsArr["reaction"]);
     }
-    $this->scoreGen->GenerateScoreObj();
+    return $data;
+    //$this->scoreGen->GenerateScoreObj();
   }
 }
