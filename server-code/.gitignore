@@ -6,3 +6,4 @@ vendor/
 tmp
 .DS_Store
 .idea
+server-code/config.php
