@@ -1,12 +1,12 @@
 <?php
 class ScoreGenerator {
-  //Raw Data
-  private $shareAmount;
-  private $reactionsObj;
-  private $commentsArr;
-  private $timeAlive;
-  private $negFeedbackAmount;
-  private $commentsAmount;
+  private $maxComments;
+  private $maxReactions;
+  private $maxShares;
+  private $weightShares;
+  private $weightReactions;
+  private $weightComments;
+
 
   //Score Data
   /**
@@ -16,11 +16,6 @@ class ScoreGenerator {
 
   /**
    * ScoreGenerator constructor.
-   * @param int $shareAmount
-   * @param string $reactionsObj
-   * @param $commentsArr
-   * @param $timeAlive
-   * @param $negFeedbackAmount
    * @param $maxComments
    * @param $maxReactions
    * @param $maxShares
@@ -29,25 +24,24 @@ class ScoreGenerator {
    * @param $weightComments
    * @internal param $likesAmount
    */
-  public function __construct($shareAmount, $reactionsObj, $commentsArr, $timeAlive, $negFeedbackAmount, $maxComments,
-                              $maxReactions, $maxShares, $weightShares, $weightReactions, $weightComments) {
-    $this->shareAmount = $shareAmount;
-    $this->reactionsObj = $reactionsObj;
-    $this->commentsArr = $commentsArr;
-    $this->commentsAmount = count($commentsArr);
-    $this->timeAlive = $timeAlive;
-    $this->negFeedbackAmount = $negFeedbackAmount;
-    $this->finalScoreObj = new Score();
+  public function __construct($maxComments, $maxReactions, $maxShares, $weightShares, $weightReactions, $weightComments) {
+    $this->maxComments = $maxComments;
+    $this->maxReactions = $maxReactions;
+    $this->maxShares = $maxShares;
+    $this->weightShares = $weightShares;
+    $this->weightReactions = $weightReactions;
+    $this->weightComments = $weightComments;
   }
 
   function AnalyzeComments() {
 
   }
 
-  function GenerateScoreObj() {
-    $this->finalScoreObj->Shares = $this->getSharesScore();
-    $this->finalScoreObj->Reactions = $this->getReactionsScore();
-    $this->finalScoreObj->Comments = $this->getCommentsScore();
+  function GenerateScoreObj($shareAmount, $commentsArr, $timeAlive, $negFeedbackAmount,
+                            $sadAmount, $hahaAmount, $angerAmount, $wowAmount, $loveAmount, $likeAmount) {
+    $this->finalScoreObj->Shares = $this->getSharesScore($shareAmount);
+    $this->finalScoreObj->Reactions = $this->getReactionsScore($sadAmount, $hahaAmount, $angerAmount, $wowAmount, $loveAmount, $likeAmount);
+    $this->finalScoreObj->Comments = $this->getCommentsScore($commentsArr);
     $this->finalScoreObj->Total = $this->finalScoreObj->Shares + $this->finalScoreObj->Reactions + $this->finalScoreObj->Comments;
   }
 
