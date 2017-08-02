@@ -22,18 +22,18 @@ class Page
      * GetPost constructor.
      * @param $pageId
      * @param $accessToken
-     * @param $userAccessToken
+     * @param $pageAccessToken
      */
-    public function __construct($pageId, $userAccessToken)
+    public function __construct($pageId, $pageAccessToken)
     {
         $this->pageId = $pageId;
-        $this->userAccessToken = $userAccessToken;
-        $this->pageAccessToken = $this->getPageAccessToken();
+        //$this->userAccessToken = $userAccessToken;
+        $this->pageAccessToken = $pageAccessToken;
     }
 
     private function getPageAccessToken(){
 
-        $url = self::FACEBOOK_GRAPH_API_URL."/{$this->pageId}?fields=access_token{$this->userAccessToken}";
+        $url = self::FACEBOOK_GRAPH_API_URL."/{$this->pageId}?fields=access_token&access_token={$this->userAccessToken}";
         $response = CurlService::getCurlRespone($url);
         $pageAccessToken = $response['access_token'];
         return $pageAccessToken;
@@ -42,6 +42,8 @@ class Page
     public function getPosts($postId = null){
 
         $postsFbData = $this->getPostsFromFb($postId);
+
+        
 
         return $postsFbData;
     }
@@ -57,7 +59,7 @@ class Page
 
 
     private function getAllPagePosts(){
-        $url = self::FACEBOOK_GRAPH_API_URL."/{$this->pageId}/promotable_posts?fields=created_time,is_published,message,updated_time,link,description,caption,name,object_id,full_picture,child_attachments,attachments,picture,source,scheduled_publish_time,type,likes.summary(true),shares,comments.summary(true),insights.metric(post_negative_feedback,post_fan_reach,post_impressions_unique,post_reactions_like_total,post_stories_by_action_type)&access_token={$this->pageAccessToken}";
+        $url = self::FACEBOOK_GRAPH_API_URL."/{$this->pageId}/promotable_posts?fields=created_time,is_published,message,updated_time,link,description,caption,name,object_id,full_picture,child_attachments,attachments,picture,source,scheduled_publish_time,type,reactions.summary(true),likes.summary(true),shares,comments.summary(true),insights.metric(post_negative_feedback,post_fan_reach,post_impressions_unique,post_reactions_like_total,post_reactions_love_total,post_reactions_wow_total,post_reactions_haha_total,post_reactions_sorry_total,post_reactions_anger_total,post_reactions_by_type_total,post_stories_by_action_type)&access_token={$this->pageAccessToken}";
 
         $response = CurlService::getCurlRespone($url);
 

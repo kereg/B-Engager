@@ -21,7 +21,7 @@ class CurlService
         $response = curl_exec($ch);
         $info = curl_getinfo($ch);
         if ($info["http_code"] !== 200)
-            throw new Exception("Error when calling $url");
+            throw new Exception("Error when calling $url. Data: ".$response);
 
         return $response;
     }
