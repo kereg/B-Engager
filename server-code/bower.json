@@ -1,0 +1,27 @@
+{
+  "name": "B-Engager",
+  "homepage": "https://github.com/kereg/B-Engager",
+  "authors": [
+    "Tomer Kohane <tomerk@bidalgo.com>"
+  ],
+  "description": "Analyze posts from facebook pages",
+  "main": "appRunner.php",
+  "keywords": [
+    "facebook",
+    "watson",
+    "tone",
+    "analyzer",
+    "ads",
+    "promotion"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+  }
+}
