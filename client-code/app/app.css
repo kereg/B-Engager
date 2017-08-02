@@ -1,0 +1,29 @@
+/* app css stylesheet */
+
+.navbar-right li:last-of-type {
+  margin-right:25px;
+}
+
+.container {
+  margin-top: 75px;
+  text-align: center;
+}
+
+.welcome-page-div, .main-page-div{
+  margin-top: 75px;
+  text-align: center;
+  width: 350px;
+  height: 200px;
+
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  margin: auto;
+}
+
+.fb-login-button {
+  margin: 20px;
+}

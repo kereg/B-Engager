@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html lang="en" ng-app="bEngagerApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html lang="en" ng-app="bEngagerApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html lang="en" ng-app="bEngagerApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="bEngagerApp" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>bEngager</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
+  <link rel="stylesheet" href="bower_components/highcharts-ng/dist/highcharts-ng.css">
+  <link rel="icon" href="assets/images/be.ico" type="image/ico">
+  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src='bower_components/jquery/dist/jquery.min.js'></script>
+  <link rel="stylesheet" href="app.css">
+
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="bower_components/highcharts-ng/dist/highcharts-ng.min.js"></script>
+  <script src="app.module.js"></script>
+  <script src="app.config.js"></script>
+  <script src="app.constants.js"></script>
+  <script src="core/core.module.js"></script>
+  <script src="core/serverData/serverData.module.js"></script>
+  <script src="core/serverData/serverData.service.js"></script>
+  <script src="welcomePage/welcome-page.module.js"></script>
+  <script src="welcomePage/welcome-page.component.js"></script>
+  <script src="mainPage/main-page.module.js"></script>
+  <script src="mainPage/main-page.component.js"></script>
+  <script src="comments/comments.module.js"></script>
+  <script src="comments/comments.component.js"></script>
+  <script src="fullAnalysis/full-analysis.module.js"></script>
+  <script src="fullAnalysis/full-analysis.component.js"></script>
+</head>
+<body ng-class="body-style">
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10&appId=134838633282782";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<div class="container-fluid">
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" ng-click="$ctrl.isNavCollapsed = !$ctrl.isNavCollapsed">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">bEngager</a>
+    </div>
+    <div class="collapse navbar-collapse" uib-collapse="$ctrl.isNavCollapsed">
+      <ul class="nav navbar-nav">
+        <li><a href="#!/mainPage">Choose Page</a></li>
+        <li><a href="#!/fullAnalysis">Full Analysis</a></li>
+        <li><a href="#!/comments">Comments Analysis</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#!/welcomePage">Login</a></li>
+        <li><a href="#">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div ng-view></div>
+</div>
+
+</body>
+</html>
