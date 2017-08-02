@@ -20,7 +20,7 @@ class ScoreHandler {
    * @param $weightComments
    * @internal param $scoreGen
    */
-  public function __construct($dataArr, $weightShares=0.33, $weightReactions=0.33, $weightComments=0.33) {
+  public function __construct($dataArr, $weightShares, $weightReactions, $weightComments) {
     $this->updateMaxAmounts($dataArr);
     $this->scoreGen = new ScoreGenerator($this->maxComments, $this->maxReactions, $this->maxShares, $weightShares, $weightReactions, $weightComments);
   }
@@ -37,11 +37,15 @@ class ScoreHandler {
   }
 
   public function getScores($dataArr) {
+    $resultArr = array();
+    $curTime = new DateTime();
     foreach ($dataArr as $dataObj) {
-      $totalsArr = $dataObj["totals"];
-      //$this->scoreGen->GenerateScoreObj($totalsArr["share"], $totalsArr["reaction"]);
+      $daysAlive = $curTime->diff(new DateTime($dataObj["created_time"]))->d;
+      $arr = $dataObj["totals"];
+      $scoreObj = $this->scoreGen->GenerateScoreObj($arr["share"], $arr["comments"], $daysAlive, $arr["post_negative_feedback"],
+        $arr["sorry"], $arr["haha"], $arr["anger"], $arr["wow"], $arr["love"], $arr["like"], $arr['reactions']);
+      array_push($resultArr, $scoreObj);
     }
-    return $data;
-    //$this->scoreGen->GenerateScoreObj();
+    return $resultArr = array();
   }
 }
