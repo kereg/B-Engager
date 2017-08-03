@@ -14,13 +14,14 @@ if(isset($_REQUEST['pageId']) && !empty($_REQUEST['pageId'])){
     $pageId = $_REQUEST['pageId'];
 }
 
-$accessToken = getAccessToken($pageId);
 
 try{
     if (file_exists("json-presets/$pageId.json")){
         $jsonData = file_get_contents("json-presets/$pageId.json");
     }
     else{
+        $accessToken = getAccessToken($pageId);
+
         $analyze = new AnalyzePage($pageId,$accessToken,$postIds);
         $data = $analyze->analyzePage();
         $jsonData = json_encode(array("data" => $data));
