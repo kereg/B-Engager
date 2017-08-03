@@ -46,7 +46,7 @@ class Page
 
             //Get all comments
             if (isset($postData['comments']['paging']['next'])){
-                $postData['comments']['data'] = array_merge($postData['comments']['data'],CurlService::makeFbGetApiCall($postData['comments']['paging']['next']));
+                $postData['comments']['data'] = array_merge($postData['comments']['data'],CurlService::makeFbGetApiCall($postData['comments']['paging']['next'],"GET",10));
             }
 
             //Get all insights
@@ -81,7 +81,7 @@ class Page
         $response = array();
         foreach ($this->postIds as $postId){
 
-            $url = self::FACEBOOK_GRAPH_API_URL."/{$this->pageId}_{$postId}?fields=created_time,is_published,message,updated_time,link,description,caption,name,object_id,full_picture,child_attachments,attachments,picture,source,scheduled_publish_time,type,comments.limit(10),insights.metric(post_negative_feedback,post_fan_reach,post_impressions_unique,post_reactions_by_type_total,post_stories_by_action_type)&access_token={$this->accessToken}";
+            $url = self::FACEBOOK_GRAPH_API_URL."/{$this->pageId}_{$postId}?fields=created_time,is_published,message,updated_time,link,description,caption,name,object_id,full_picture,child_attachments,attachments,picture,source,scheduled_publish_time,type,comments.limit(10),insights.metric(post_negative_feedback,post_fan_reach,post_impressions_unique,post_reactions_by_type_total,post_stories_by_action_type)&limit=100&access_token={$this->accessToken}";
             $response[] = CurlService::makeFbGetApiCall($url);
         }
 

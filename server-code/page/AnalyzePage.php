@@ -48,6 +48,7 @@ class AnalyzePage
             $data[] = array(
                 'page_id'=>$idData[0],
                 'post_id'=>$idData[1],
+                'picture'=>$postData['full_picture'],
                 'created_time'=>$postData['created_time'],
                 'type'=>$postData['type'],
                 'comments'=>isset($postData['comments']) ? $this->getComments($postData['comments']['data']) : array(),

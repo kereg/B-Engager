@@ -17,7 +17,7 @@ class CurlService
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-        curl_setopt($ch, CURLOPT_IGNORE_CONTENT_LENGTH, $method);
+        curl_setopt($ch, CURLOPT_IGNORE_CONTENT_LENGTH, 1);
 
         foreach ($curlOptions as $optionName => $value){
             curl_setopt($ch, $optionName, $value);
@@ -36,8 +36,9 @@ class CurlService
         return $response;
     }
 
-    public static function makeFbGetApiCall($url, $method="GET"){
+    public static function makeFbGetApiCall($url, $method="GET",$limit=0){
 
+        $counter = 0;
         $response = array();
         do {
             $ans = self::getCurlResponse($url,$method);
@@ -49,6 +50,10 @@ class CurlService
             $url = isset($data['paging']['next']) ? $data['paging']['next'] : null;
             unset($data);
             unset($realData);
+            $counter++;
+            if ($limit && $counter>=$limit){
+                break;
+            }
         }while (!empty($url));
 
         return $response;
