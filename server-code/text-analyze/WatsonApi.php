@@ -14,7 +14,10 @@ class WatsonApi {
   const URL = 'https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2016-05-19';
 
   function getTextAnalysis($text) {
-
+      
+      if (!trim($text)){
+          return null;
+      }
       $data = json_encode(array('text' => $text));
       $curlOptions = array(
           CURLOPT_USERPWD => self::USERNAME . ':' . self::PASSWORD,

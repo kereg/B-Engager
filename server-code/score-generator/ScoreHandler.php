@@ -6,6 +6,8 @@
  * Time: 9:16 PM
  */
 
+require_once $_SERVER['DOCUMENT_ROOT']."/B-Engager/server-code/score-generator/ScoreGenerator.php";
+
 class ScoreHandler {
   private $scoreGen;
   private $maxShares;
@@ -20,7 +22,7 @@ class ScoreHandler {
    * @param $weightComments
    * @internal param $scoreGen
    */
-  public function __construct($dataArr, $weightShares, $weightReactions, $weightComments) {
+  public function __construct($dataArr, $weightShares=0.33, $weightReactions=0.33, $weightComments=0.33) {
     $this->updateMaxAmounts($dataArr);
     $this->scoreGen = new ScoreGenerator($this->maxComments, $this->maxReactions, $this->maxShares, $weightShares, $weightReactions, $weightComments);
   }
@@ -30,8 +32,8 @@ class ScoreHandler {
     $this->maxComments = 0;
     $this->maxReactions = 0;
     foreach ($dataArr as $dataObj) {
-      $this->maxShares = max($dataObj["totals"]["share"], $this->maxShares);
-      $this->maxComments = max($dataObj["totals"]["comment"], $this->maxComments);
+      $this->maxShares = max($dataObj["totals"]["shares"], $this->maxShares);
+      $this->maxComments = max($dataObj["totals"]["comments"], $this->maxComments);
       $this->maxReactions = max($dataObj["totals"]["reactions"], $this->maxReactions);
     }
   }
@@ -42,10 +44,10 @@ class ScoreHandler {
     foreach ($dataArr as $dataObj) {
       $daysAlive = $curTime->diff(new DateTime($dataObj["created_time"]))->d;
       $arr = $dataObj["totals"];
-      $scoreObj = $this->scoreGen->generateScoreObj($arr["share"], $arr["comments"], $daysAlive, $arr["post_negative_feedback"],
+      $scoreObj = $this->scoreGen->generateScoreObj($arr["shares"], $dataObj['comments'], $daysAlive, $arr["post_negative_feedback"],
         $arr["sorry"], $arr["haha"], $arr["anger"], $arr["wow"], $arr["love"], $arr["like"], $arr['reactions']);
       array_push($resultArr, $scoreObj);
     }
-    return $resultArr = array();
+    return $resultArr;
   }
 }

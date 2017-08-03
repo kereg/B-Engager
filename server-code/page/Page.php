@@ -20,12 +20,13 @@ class Page
      * GetPost constructor.
      * @param $pageId
      * @param $accessToken
-     * @param $accessToken
+     * @param array|null $postIds
      */
-    public function __construct($pageId, $accessToken)
+    public function __construct($pageId, $accessToken,$postIds)
     {
         $this->pageId = $pageId;
         $this->accessToken = $accessToken;
+        $this->postIds = $postIds;
     }
 
     private function getPageAccessToken(){
@@ -36,10 +37,10 @@ class Page
         return $pageAccessToken;
     }
 
-    public function getPosts($postId = null){
+    public function getPosts(){
 
         //Get the posts
-        $postsFbData = $this->getPostsFromFb($postId);
+        $postsFbData = $this->getPostsFromFb();
 
         foreach ($postsFbData as &$postData){
 
@@ -57,11 +58,13 @@ class Page
     }
 
     /**
-     * @param $postId
      * @return array of posts with array of data
      */
-    private function getPostsFromFb($postId){
+    private function getPostsFromFb(){
 
+        if (!empty($this->postIds)){
+            return $this->getSpecificPosts();
+        }
         return $this->getAllPagePosts();
     }
 
@@ -72,7 +75,17 @@ class Page
         $response = CurlService::makeFbGetApiCall($url);
 
         return $response;
+    }
 
+    private function getSpecificPosts(){
+        $response = array();
+        foreach ($this->postIds as $postId){
+
+            $url = self::FACEBOOK_GRAPH_API_URL."/{$this->pageId}_{$postId}?fields=created_time,is_published,message,updated_time,link,description,caption,name,object_id,full_picture,child_attachments,attachments,picture,source,scheduled_publish_time,type,comments.limit(10),insights.metric(post_negative_feedback,post_fan_reach,post_impressions_unique,post_reactions_by_type_total,post_stories_by_action_type)&access_token={$this->accessToken}";
+            $response[] = CurlService::makeFbGetApiCall($url);
+        }
+
+        return $response;
     }
 
 

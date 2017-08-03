@@ -13,8 +13,10 @@ use page\AnalyzePage;
 
 
 try{
-    $analyze = new AnalyzePage($pageId,$accessToken);
-    echo $analyze->analyzePage();
+    $analyze = new AnalyzePage($pageId,$accessToken,$postIds);
+    echo "<pre>".
+        print_r($analyze->analyzePage(),true).
+    "</pre>";
 }
 catch (\Exception $e){
     echo $e->getMessage();

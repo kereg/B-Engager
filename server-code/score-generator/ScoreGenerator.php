@@ -1,5 +1,5 @@
 <?php
-require_once '../text-analyze/WatsonApi.php';
+require_once $_SERVER['DOCUMENT_ROOT']."/B-Engager/server-code/text-analyze/WatsonApi.php";
 
 class ScoreGenerator {
   private $maxComments;
@@ -8,6 +8,8 @@ class ScoreGenerator {
   private $weightShares;
   private $weightReactions;
   private $weightComments;
+  const EMOTIONS_FACTOR = array('anger' => -1, 'disgust' => -1, 'fear' => 0, 'joy'=>1, 'sadness'=>-0.5);
+  const LIKELIHOOD_THRESHOLD = 0.5;
 
   /**
    * ScoreGenerator constructor.
@@ -30,29 +32,32 @@ class ScoreGenerator {
 
   function analyzeComments($txtArr) {
     $watson = new WatsonApi();
-    $response = json_decode($watson->getTextAnalysis(implode('. ', $txtArr)));
+    $response = json_decode($watson->getTextAnalysis(implode('. ', $txtArr)),true);
+    if (!$response){
+        return 0;
+    }
     $emotionsArr =  $response["document_tone"]["tone_categories"][0]["tones"];
-    $anger = $emotionsArr[0]["score"];
-    $disgust = $emotionsArr[1]["score"];
-    $fear = $emotionsArr[2]["score"];
-    $joy = $emotionsArr[3]["score"];
-    $sadness = $emotionsArr[4]["score"];
+      $emotionsArr = array(
+        'anger' =>$emotionsArr[0]["score"],
+        'disgust' => $emotionsArr[1]["score"],
+        'fear' => $emotionsArr[2]["score"],
+        'joy' => $emotionsArr[3]["score"],
+        'sadness' => $emotionsArr[4]["score"]
+    );
 
-    $this->getGeneralWatsonScore($anger, $disgust, $fear, $joy, $sadness);
-
-    return 0;
+    return $this->getGeneralWatsonScore($emotionsArr);
   }
 
   function generateScoreObj($shareAmount, $commentsArr, $timeAlive, $negFeedbackAmount,
                             $sadAmount, $hahaAmount, $angerAmount, $wowAmount, $loveAmount, $likeAmount, $reactionsAmount) {
     $scoreArr = array();
-    $scoreArr['Shares'] = $this->getSharesScore($shareAmount);
-    $scoreArr['Reactions'] = $this->getReactionsScore($sadAmount, $hahaAmount, $angerAmount, $wowAmount, $loveAmount,
+    $scoreArr['shares'] = $this->getSharesScore($shareAmount);
+    $scoreArr['reactions'] = $this->getReactionsScore($sadAmount, $hahaAmount, $angerAmount, $wowAmount, $loveAmount,
       $likeAmount, $reactionsAmount);
-    $scoreArr['Comments'] = $this->getCommentsScore($commentsArr);
-    $scoreArr['TimeAlive'] = $timeAlive;
-    $scoreArr['NegFeedbackAmount'] = $negFeedbackAmount;
-    $scoreArr['Total'] = $scoreArr['Shares'] + $scoreArr['Reactions'] + $scoreArr['Comments'];
+    $scoreArr['comments'] = $this->getCommentsScore($commentsArr);
+    $scoreArr['timeAlive'] = $timeAlive;
+    $scoreArr['negFeedbackAmount'] = $negFeedbackAmount;
+    $scoreArr['total'] =  $this->weightShares*$scoreArr['shares'] +  $this->weightReactions*$scoreArr['reactions'] +  $this->weightComments*$scoreArr['comments'];
     return $scoreArr;
   }
 
@@ -91,10 +96,21 @@ class ScoreGenerator {
     //0.75 is probable
   }
 
-  private function getGeneralWatsonScore($anger, $disgust, $fear, $joy, $sadness) {
-    //if only 1 >0.75 take it
-    //
+  private function getGeneralWatsonScore($emotionsArr){
 
+      $likely = array();
+      foreach ($emotionsArr as $emotion => $score){
+          if ($score >= self::LIKELIHOOD_THRESHOLD){
+              $likely[$emotion] = $score;
+          }
+      }
+      if (count($likely) === 1){
+          $emotion = key($likely);
+          $score = current($likely);
+          $finalScore = self::EMOTIONS_FACTOR[$emotion]*$score*100;
+          return $finalScore;
+      }
+      return 0;
   }
 }
 
