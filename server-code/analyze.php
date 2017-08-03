@@ -14,9 +14,8 @@ use page\AnalyzePage;
 
 try{
     $analyze = new AnalyzePage($pageId,$accessToken,$postIds);
-    echo "<pre>".
-        print_r($analyze->analyzePage(),true).
-    "</pre>";
+    $data = $analyze->analyzePage();
+    echo json_encode($data);
 }
 catch (\Exception $e){
     echo $e->getMessage();

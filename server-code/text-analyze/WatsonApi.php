@@ -21,9 +21,14 @@ class WatsonApi {
       $data = json_encode(array('text' => $text));
       $curlOptions = array(
           CURLOPT_USERPWD => self::USERNAME . ':' . self::PASSWORD,
-          CURLOPT_HTTPHEADER => array('Content-Type: application/json')
+          CURLOPT_HTTPHEADER => array('Content-Type: application/json','Content-length: '.strlen($data))
       );
-      $response = CurlService::getCurlResponse(self::URL,"POST",$data,$curlOptions);
+      try{
+          $response = CurlService::getCurlResponse(self::URL,"POST",$data,$curlOptions);
+      }
+      catch (\Exception $e){
+          return null;
+      }
       return $response;
   }
 }
