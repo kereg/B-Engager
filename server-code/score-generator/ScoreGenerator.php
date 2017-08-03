@@ -9,13 +9,6 @@ class ScoreGenerator {
   private $weightReactions;
   private $weightComments;
 
-
-  //Score Data
-  /**
-   * @var Score
-   */
-  private $finalScoreObj;
-
   /**
    * ScoreGenerator constructor.
    * @param $maxComments
@@ -35,18 +28,22 @@ class ScoreGenerator {
     $this->weightComments = $weightComments;
   }
 
-  function AnalyzeComments($txtArr) {
-    $resultsArr = array();
+  function analyzeComments($txtArr) {
     $watson = new WatsonApi();
-    foreach ($txtArr as $txt) {
-//      $response = $watson->getTextAnalysis($txt);
-//      array_push($resultsArr, $this->getScoreFromWatsonReply($response));
-    }
-//    return $resultsArr;
+    $response = json_decode($watson->getTextAnalysis(implode('. ', $txtArr)));
+    $emotionsArr =  $response["document_tone"]["tone_categories"][0]["tones"];
+    $anger = $emotionsArr[0]["score"];
+    $disgust = $emotionsArr[1]["score"];
+    $fear = $emotionsArr[2]["score"];
+    $joy = $emotionsArr[3]["score"];
+    $sadness = $emotionsArr[4]["score"];
+
+    $this->getGeneralWatsonScore($anger, $disgust, $fear, $joy, $sadness);
+
     return 0;
   }
 
-  function GenerateScoreObj($shareAmount, $commentsArr, $timeAlive, $negFeedbackAmount,
+  function generateScoreObj($shareAmount, $commentsArr, $timeAlive, $negFeedbackAmount,
                             $sadAmount, $hahaAmount, $angerAmount, $wowAmount, $loveAmount, $likeAmount, $reactionsAmount) {
     $scoreArr = array();
     $scoreArr['Shares'] = $this->getSharesScore($shareAmount);
@@ -55,7 +52,7 @@ class ScoreGenerator {
     $scoreArr['Comments'] = $this->getCommentsScore($commentsArr);
     $scoreArr['TimeAlive'] = $timeAlive;
     $scoreArr['NegFeedbackAmount'] = $negFeedbackAmount;
-    $scoreArr['Total'] = $this->finalScoreObj->Shares + $this->finalScoreObj->Reactions + $this->finalScoreObj->Comments;
+    $scoreArr['Total'] = $scoreArr['Shares'] + $scoreArr['Reactions'] + $scoreArr['Comments'];
     return $scoreArr;
   }
 
@@ -70,10 +67,34 @@ class ScoreGenerator {
 
   private function getCommentsScore($commentsArr) {
     $commentsAmountScore = count($commentsArr)/$this->maxComments;
-    $commentsWatsonScore = AnalyzeComments($commentsArr);
+    $commentsWatsonScore = $this->analyzeComments($commentsArr);
     return $commentsWatsonScore;
   }
 
+  /**
+   * Emotion
+  < .5 = not likely present
+  > .5 = likely present
+  > .75 = very likely present
+   *
+   * Language Style
+  < .5 = not likely present
+  > .5 = likely present
+  > .75 = very likely present
+   *
+   * Social Tendencies
+  < .5 = not likely present
+  > .5 = likely present
+  > .75 = very likely present
+   */
   private function getScoreFromWatsonReply() {
+    //0.75 is probable
+  }
+
+  private function getGeneralWatsonScore($anger, $disgust, $fear, $joy, $sadness) {
+    //if only 1 >0.75 take it
+    //
+
   }
 }
+

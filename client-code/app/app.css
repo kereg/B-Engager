@@ -10,7 +10,6 @@
 }
 
 .welcome-page-div, .main-page-div{
-  margin-top: 75px;
   text-align: center;
   width: 350px;
   height: 200px;
@@ -27,3 +26,4 @@
 .fb-login-button {
   margin: 20px;
 }
+

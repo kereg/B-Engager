@@ -42,7 +42,7 @@ class ScoreHandler {
     foreach ($dataArr as $dataObj) {
       $daysAlive = $curTime->diff(new DateTime($dataObj["created_time"]))->d;
       $arr = $dataObj["totals"];
-      $scoreObj = $this->scoreGen->GenerateScoreObj($arr["share"], $arr["comments"], $daysAlive, $arr["post_negative_feedback"],
+      $scoreObj = $this->scoreGen->generateScoreObj($arr["share"], $arr["comments"], $daysAlive, $arr["post_negative_feedback"],
         $arr["sorry"], $arr["haha"], $arr["anger"], $arr["wow"], $arr["love"], $arr["like"], $arr['reactions']);
       array_push($resultArr, $scoreObj);
     }
