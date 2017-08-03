@@ -105,5 +105,10 @@ class AnalyzePage
 
     public function sortByScore($postsData){
 
+        usort($postsData['data'], function($a, $b){
+            return $b['score']['total'] - $a['score']['total'];
+        });
+
+        return $postsData;
     }
 }

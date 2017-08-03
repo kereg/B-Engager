@@ -24,7 +24,7 @@ try{
         $jsonData = file_get_contents("json-presets/$pageId.json");
         //Sort by best score
         $analyze = new AnalyzePage(null,null,null);
-        $analyze->sortByScore(json_decode($jsonData,true));
+        $jsonData = json_encode($analyze->sortByScore(json_decode($jsonData,true)));
     }
     else{
         $accessToken = getAccessToken($pageId);
