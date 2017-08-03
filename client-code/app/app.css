@@ -9,7 +9,7 @@
   text-align: center;
 }
 
-.welcome-page-div, .main-page-div{
+.welcome-page-div {
   text-align: center;
   width: 350px;
   height: 200px;
@@ -27,3 +27,49 @@
   margin: 20px;
 }
 
+.btn-primary {
+  width: 250px;
+  font-size: 25px;
+  margin: 30px;
+  border: none;
+  background: #3b687b;
+}
+
+#sliders-div {
+  width: 400px;
+  margin: inherit;
+  margin-top: 0;
+}
+
+.slider-headline {
+  font-size: 17px;
+}
+
+.slider {
+  margin-top: 10px;
+}
+
+img {
+  /*width: inherit;*/
+  height: 250px;
+  margin-bottom: 15px;
+
+}
+
+.post-info {
+  height: 360px;
+  border: solid darkgrey 1px;
+  padding: 10px 10px;
+}
+
+.post-score-healine {
+  font-size: 18px;
+  text-shadow: 1px 1px 1px rgba(145, 150, 154, 0.76);
+  color: #000000;
+  font-weight: 900;
+}
+
+.score-values {
+  text-align: left;
+  line-height: 8px;
+}

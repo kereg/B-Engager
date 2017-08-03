@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('fullAnalysis',[]);
+angular.module('fullAnalysis',['core']);

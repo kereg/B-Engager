@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('mainPage',[]);
+angular.module('mainPage',['rzModule', 'ui.bootstrap']);

@@ -1,4 +1,25 @@
 <div class="container full-analysis-div">
-    <div>full analysis</div>
+
+  <div class="post-info col-sm-6" ng-repeat="postData in $ctrl.posts">
+    <img class="col-sm-12" src="{{postData.picture}}" alt="post">
+    <div></div>
+    <div class="post-score-healine col-sm-3">
+      <p>Post Score</p>
+    </div>
+    <div class="col-sm-4 score-values">
+      <p class="score-value">Comments: {{postData.score.comments}}</p>
+      <p class="score-value">Shares: {{postData.score.shares}}</p>
+      <p class="score-value">Reactions: {{postData.score.reactions}}</p>
+      <p class="score-value">Total: {{postData.score.total}}</p>
+    </div>
+    <!--<div class="fb-post" data-href="https://www.facebook.com/{{postData.page_id}}/posts/{{postData.post_id}}/" data-width="auto"-->
+         <!--data-show-text="true">-->
+      <!--<blockquote cite="https://www.facebook.com/{{postData.page_id}}/posts/{{postData.post_id}}/" class="fb-xfbml-parse-ignore">-->
+        <!--Posted by <a href="https://www.facebook.com/facebook/">Facebook</a> on&nbsp;<a-->
+        <!--href="https://www.facebook.com/{{postData.page_id}}/posts/{{postData.post_id}}/">Thursday, August 27, 2015</a></blockquote>-->
+    <!--</div>-->
+  </div>
+
+
 </div>
 
